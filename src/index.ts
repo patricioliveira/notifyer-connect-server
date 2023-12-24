@@ -113,7 +113,7 @@ export function initServer(serverOptions: any) {
     logger.info(
       `\x1b[31m Visit ${serverOptions.host}:${PORT}/api-docs for Swagger docs`
     );
-    logger.info(`WPPConnect-Server version: ${version}`);
+    logger.info(`NotifyerConnect-Server version: ${version}`);
 
     if (serverOptions.startAllSession) startAllSessions(serverOptions, logger);
   });

@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
     cb(null, path.resolve(__dirname, 'uploads'));
   },
   filename: function (req, file, cb) {
-    const filename = `wppConnect-${Date.now()}-${file.originalname}`;
+    const filename = `NotifyerConnect-${Date.now()}-${file.originalname}`;
     cb(null, filename);
   },
 });

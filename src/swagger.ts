@@ -23,9 +23,9 @@ const endpointsFiles = ['./src/routes/index.ts'];
 const doc = {
   info: {
     version: '2.0.0',
-    title: 'WPPConnect API Rest',
+    title: 'Notifyer Connect API Rest',
     description:
-      'Welcome to the wppconnect-server API documentation. This API provides a set of endpoints to interact with the wppconnect-server application, allowing you to build integrations and automate interactions with WhatsApp.',
+      'Welcome to the NotifyerConnect-server API documentation. This API provides a set of endpoints to interact with the NotifyerConnect-server application, allowing you to build integrations and automate interactions with WhatsApp.',
   },
   host: `${config.host}:${config.port}`,
   securityDefinitions: {
