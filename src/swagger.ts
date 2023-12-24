@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 WPPConnect Team
+ * Copyright 2023 Notifyer Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ const doc = {
     version: '2.0.0',
     title: 'Notifyer Connect API Rest',
     description:
-      'Welcome to the NotifyerConnect-server API documentation. This API provides a set of endpoints to interact with the NotifyerConnect-server application, allowing you to build integrations and automate interactions with WhatsApp.',
+      'Welcome to the NotifyerConnect Server API documentation. This API provides a set of endpoints to interact with the Notifyer Extension, allowing you to build integrations and automate interactions with WhatsApp.',
   },
   host: `${config.host}:${config.port}`,
   securityDefinitions: {

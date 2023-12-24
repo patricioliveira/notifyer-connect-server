@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 WPPConnect Team
+ * Copyright 2021 Notifyer Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ export async function metrics(req: Request, res: Response) {
    */
   const register = new Prometheus.Registry();
   register.setDefaultLabels({
-    app: 'wppconnect-server',
+    app: 'NotifyerConnect-server',
   });
   Prometheus.collectDefaultMetrics({ register });
 

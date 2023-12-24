@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 WPPConnect Team
+ * Copyright 2021 Notifyer Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2254,11 +2254,10 @@ export async function chatWoot(req: Request, res: Response) {
       for (const contato of contactToArray(phone, false)) {
         if (message_type == 'outgoing') {
           if (message.attachments) {
-            const base_url = `${
-              client.config.chatWoot.baseURL
-            }/${message.attachments[0].data_url.substring(
-              message.attachments[0].data_url.indexOf('/rails/') + 1
-            )}`;
+            const base_url = `${client.config.chatWoot.baseURL
+              }/${message.attachments[0].data_url.substring(
+                message.attachments[0].data_url.indexOf('/rails/') + 1
+              )}`;
             await client.sendFile(
               `${contato}`,
               base_url,

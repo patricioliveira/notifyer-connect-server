@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 WPPConnect Team
+ * Copyright 2023 Notifyer Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,7 +136,7 @@ export async function callWebHook(
             const events = ['unreadmessages', 'onmessage'];
             if (events.includes(event) && req.serverOptions.webhook.readMessage)
               client.sendSeen(chatId);
-          } catch (e) {}
+          } catch (e) { }
         })
         .catch((e) => {
           req.logger.warn('Error calling Webhook.', e);
@@ -178,11 +178,10 @@ export async function autoDownload(client: any, req: any, message: any) {
         bucketName =
           bucketName.length < 3
             ? bucketName +
-              `${Math.floor(Math.random() * (999 - 100 + 1)) + 100}`
+            `${Math.floor(Math.random() * (999 - 100 + 1)) + 100}`
             : bucketName;
-        const fileName = `${
-          config.aws_s3.defaultBucketName ? client.session + '/' : ''
-        }${hashName}.${mime.extension(message.mimetype)}`;
+        const fileName = `${config.aws_s3.defaultBucketName ? client.session + '/' : ''
+          }${hashName}.${mime.extension(message.mimetype)}`;
 
         if (
           !config.aws_s3.defaultBucketName &&

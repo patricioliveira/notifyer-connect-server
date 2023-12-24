@@ -5,10 +5,10 @@ services:
     build:
       context: .
     volumes:
-      - ./config.ts:/usr/src/wpp-server/config.ts
-      - ./wppconnect_tokens:/usr/src/wpp-server/tokens
+      - ./config.ts:/usr/src/notifyerconnect-server/config.ts
+      - ./notifyerconnect_tokens:/usr/src/notifyerconnect-server/tokens
     ports:
       - "21465:21465"
 
 volumes:
-  wppconnect_tokens: {}      
+  notifyerconnect_tokens: {}      

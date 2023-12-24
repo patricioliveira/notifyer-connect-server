@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 WPPConnect Team
+ * Copyright 2021 Notifyer Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ export default class CreateSessionUtil {
             poweredBy:
               client.config?.poweredBy ||
               req.serverOptions.poweredBy ||
-              'WPPConnect-Server',
+              'NotifyerConnect-Server',
             catchQR: (
               base64Qr: any,
               asciiQR: any,
@@ -106,7 +106,7 @@ export default class CreateSessionUtil {
                   session: client.session,
                 });
                 req.logger.info(statusFind + '\n\n');
-              } catch (error) {}
+              } catch (error) { }
             },
           }
         )

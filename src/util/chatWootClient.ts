@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 WPPConnect Team
+ * Copyright 2021 Notifyer Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ export default class chatWootClient {
     this.config = config;
     this.mobile_name = this.config.mobile_name
       ? this.config.mobile_name
-      : `WPPConnect`;
+      : `NotifyerConnect`;
     this.mobile_number = this.config.mobile_number
       ? this.config.mobile_number
       : '5511999999999';
@@ -76,7 +76,7 @@ export default class chatWootClient {
         this.sendMessage(client, {
           sender: this.sender,
           chatId: this.mobile_number + '@c.us',
-          body: `wppconnect status: ${status} `,
+          body: `NotifyerConnect status: ${status} `,
         });
       }
     });
