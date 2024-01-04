@@ -1,14 +1,28 @@
 version: "3"
 
 services:
-  wppconnect:
+  notifyer_middleware:
+    build: 
+      context: notifyer-middleware
+    ports:
+      - "3000:3000"
+  notifyer_wpp_server:
     build:
-      context: .
+      context: notifyer-wpp-server
     volumes:
       - ./config.ts:/usr/src/wpp-server/config.ts
       - ./wppconnect_tokens:/usr/src/wpp-server/tokens
     ports:
       - "21465:21465"
+  postgres:
+    image: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
 
 volumes:
-  wppconnect_tokens: {}      
+  wppconnect_tokens: {}    
+  postgres-data:  
