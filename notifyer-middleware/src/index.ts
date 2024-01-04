@@ -1,9 +1,6 @@
 import { Elysia, t } from "elysia";
 import { loginController } from "./controllers/loginController";
-import jwt from "@elysiajs/jwt";
-import cookie from "@elysiajs/cookie";
-import UnauthorizedError from "./utils/exceptions/unauthorized-error";
-import NotAManagerError from "./utils/exceptions/not-a-manager-error";
+import { swagger } from '@elysiajs/swagger';
 
 const jwtPayloadSchema = t.Object({
   sub: t.String(),
@@ -15,11 +12,29 @@ const jwtPayloadSchema = t.Object({
 //     app.use(loginController)
 //   )
 
-const app = new Elysia()
+const app = new Elysia().use(swagger(
+  {
+    documentation: {
+        info: {
+            title: 'Notifyer Documentation',
+            version: '1.0.0'
+        },
+        tags: [
+          { name: 'App', description: 'General endpoints' },
+          { name: 'Auth', description: 'Authentication endpoints' },
+          { name: 'Sessions', description: 'Sessions endpoints' }
+        ]
+    }
+}
+))
 .group("/api", (app) =>
   app.use(loginController)
 ) 
-.get("/", () => "Runner Notifyer Server 🚀").listen(3000);
+.get("/", () => "Runner Notifyer Server 🚀", {
+  detail: {
+    tags: ['App']
+  }
+}).listen(3000);
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`

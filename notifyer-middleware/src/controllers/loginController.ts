@@ -61,6 +61,10 @@ export const loginController = new Elysia()
       message: "Account login successfully",
     };
 
+  }, {
+    detail: {
+      tags: ['Auth']
+    }
   })
   .derive(async ({ cookie, jwt, set }) => {
     if (!cookie!.access_token) 

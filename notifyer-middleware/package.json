@@ -9,6 +9,7 @@
     "@elysiajs/cookie": "^0.8.0",
     "@elysiajs/cors": "^0.8.0",
     "@elysiajs/jwt": "^0.8.0",
+    "@elysiajs/swagger": "^0.8.0",
     "@prisma/client": "^5.7.1",
     "elysia": "latest",
     "prisma": "^5.7.1"
