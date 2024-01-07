@@ -15,26 +15,26 @@ const jwtPayloadSchema = t.Object({
 const app = new Elysia().use(swagger(
   {
     documentation: {
-        info: {
-            title: 'Notifyer Documentation',
-            version: '1.0.0'
-        },
-        tags: [
-          { name: 'App', description: 'General endpoints' },
-          { name: 'Auth', description: 'Authentication endpoints' },
-          { name: 'Sessions', description: 'Sessions endpoints' }
-        ]
+      info: {
+        title: 'Notifyer Documentation',
+        version: '1.0.0'
+      },
+      tags: [
+        { name: 'App', description: 'General endpoints' },
+        { name: 'Auth', description: 'Authentication endpoints' },
+        { name: 'Sessions', description: 'Sessions endpoints' }
+      ]
     }
-}
-))
-.group("/api", (app) =>
-  app.use(loginController)
-) 
-.get("/", () => "Runner Notifyer Server 🚀", {
-  detail: {
-    tags: ['App']
   }
-}).listen(3000);
+))
+  .group("/api", (app) =>
+    app.use(loginController)
+  )
+  .get("/", () => "Runner Notifyer Server 🚀", {
+    detail: {
+      tags: ['App']
+    }
+  }).listen(3000);
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`

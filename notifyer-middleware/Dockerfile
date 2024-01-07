@@ -1,12 +1,18 @@
-FROM oven/bun
+FROM oven/bun:canary-debian
 WORKDIR /notifyer-middleware
-RUN curl -fsSL https://bun.sh/install | bash
 COPY . /notifyer-middleware
-RUN bun install
-#RUN 
+COPY --from=node:18 /usr/local/bin/node /usr/local/bin/node
+
+# Install packages
+RUN bun install --production --silent
+
+# Run generation
+RUN bunx prisma generate
+# RUN bunx prisma migrate deploy
+
 EXPOSE 3000
-CMD ["bun", "run", "--watch", "src/index.ts"]
-#CMD [ "tail", "-f", "/dev/null" ]
+# CMD ["bun", "run", "--watch", "src/index.ts"]
+CMD [ "tail", "-f", "/dev/null" ]
 # RUN cd middleware-server && bun install
 
 # ENV NODE_ENV=production

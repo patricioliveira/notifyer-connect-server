@@ -5,6 +5,8 @@ import jwt from '@elysiajs/jwt'
 import UnauthorizedError from '../utils/exceptions/unauthorized-error'
 import NotAManagerError from '../utils/exceptions/not-a-manager-error'
 import { sessions } from './sessions'
+import { User } from '../models/user'
+import {prisma } from '../utils/libs/prisma'
 
 
 const jwtPayloadSchema = t.Object({
@@ -21,25 +23,49 @@ export const loginController = new Elysia()
     switch (code) {
       case 'UNAUTHORIZED':
         set.status = 401
-        return { code, message: error.message }
+        return { Status: code, Message: error.message }
       case 'NOT_A_MANAGER':
         set.status = 401
-        return { code, message: error.message }
+        return { Status: code, Message: error.message }
+      case 'VALIDATION':
+        set.status = 'Bad Request'
+        return { Status: code, Message: "Falha na validação. Certifique-se de fornecer dados válidos." }
+      default:
+        set.status = 500
+        return { Status: code, Message: "Ocorreu um problema no servidor. Tente novamente mais tarde." }
     }
   })
   .use(
     jwt({
       name: 'jwt',
-    //   secret: env.JWT_SECRET_KEY,
+      //   secret: env.JWT_SECRET_KEY,
       secret: 'env.JWT_SECRET_KEY',
       schema: jwtPayloadSchema,
     }),
   )
   .use(cookie())
   .post('/auth/signin', async ({ jwt, cookie, setCookie, body, set }) => {
-    const {email, senha} = body;
+    const { Email, Password } = body as User;
 
-    if(!(email == 'paulosmdo@gmail.com' && senha == '123'))
+    // verify email/username
+    const user = await prisma.user.findFirst({
+      where: {
+        AND: [
+          {
+            Email: Email,
+          },
+          {
+            Password: Password,
+          },
+        ],
+      },
+      select: {
+        Id: true,
+        Name: true,
+      },
+    });
+
+    if (!user)
       throw new UnauthorizedError();
 
     // generate access 
@@ -62,63 +88,32 @@ export const loginController = new Elysia()
     };
 
   }, {
+    body: t.Object({
+      Email: t.String({ description: 'paulosmdo@gmail.com' }),
+      Password: t.String()
+    }),
     detail: {
       tags: ['Auth']
     }
   })
   .derive(async ({ cookie, jwt, set }) => {
-    if (!cookie!.access_token) 
+    if (!cookie!.access_token)
       throw new UnauthorizedError();
-    
+
     const userId = await jwt.verify(cookie!.access_token);
-    if (!userId) 
+    if (!userId)
       throw new UnauthorizedError();
 
     const user = {
-        nome: 'paulo',
-        token: 'aaaaaaa'
+      nome: 'paulo',
+      token: 'aaaaaaa'
     };
 
-    if (!user) 
+    if (!user)
       throw new UnauthorizedError();
 
     return {
       user,
     };
-  }).use(sessions);
-//   .derive(({ jwt, cookie, setCookie, removeCookie }) => {
-//     return {
-//       getCurrentUser: async () => {
-//         const payload = await jwt.verify(cookie.auth)
-
-//         if (!payload) {
-//           throw new UnauthorizedError()
-//         }
-
-//         return payload
-//       },
-//       signUser: async (payload: Static<typeof jwtPayloadSchema>) => {
-//         setCookie('auth', await jwt.sign(payload), {
-//           httpOnly: true,
-//           maxAge: 7 * 86400,
-//           path: '/',
-//         })
-//       },
-//       signOut: () => {
-//         removeCookie('auth')
-//       },
-//     }
-//   })
-//   .derive(({ getCurrentUser }) => {
-//     return {
-//       getManagedRestaurantId: async () => {
-//         const { restaurantId } = await getCurrentUser()
-
-//         if (!restaurantId) {
-//           throw new NotAManagerError()
-//         }
-
-//         return restaurantId
-//       },
-//     }
-//   })
+  })
+  .use(sessions);
