@@ -1,0 +1,1 @@
+sleep 10 && bunx prisma migrate deploy && bun run dev
