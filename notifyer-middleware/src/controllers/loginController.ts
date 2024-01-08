@@ -7,11 +7,14 @@ import NotAManagerError from '../utils/exceptions/not-a-manager-error'
 import { sessions } from './sessions'
 import { User } from '../models/user'
 import {prisma } from '../utils/libs/prisma'
+import { HttpRespose } from '../models/httpResponse'
+import { md5hash } from '../utils/libs/bcrypt'
 
 
 const jwtPayloadSchema = t.Object({
-  sub: t.String(),
   userId: t.Optional(t.String()),
+  name: t.Optional(t.String()),
+  token: t.Optional(t.String())
 })
 
 export const loginController = new Elysia()
@@ -23,23 +26,23 @@ export const loginController = new Elysia()
     switch (code) {
       case 'UNAUTHORIZED':
         set.status = 401
-        return { Status: code, Message: error.message }
+        return new HttpRespose(code, error.message, '')
       case 'NOT_A_MANAGER':
         set.status = 401
-        return { Status: code, Message: error.message }
+        return new HttpRespose(code, error.message, '')
       case 'VALIDATION':
         set.status = 'Bad Request'
-        return { Status: code, Message: "Falha na validação. Certifique-se de fornecer dados válidos." }
+        return new HttpRespose(code, 'Falha na validação. Certifique-se de fornecer dados válidos.', '')
       default:
         set.status = 500
-        return { Status: code, Message: "Ocorreu um problema no servidor. Tente novamente mais tarde." }
+        return new HttpRespose(code, 'Ocorreu um problema no servidor. Tente novamente mais tarde.', '')
     }
   })
   .use(
     jwt({
       name: 'jwt',
       //   secret: env.JWT_SECRET_KEY,
-      secret: 'env.JWT_SECRET_KEY',
+      secret: Bun.env.JWT_SECRETKEY as string,
       schema: jwtPayloadSchema,
     }),
   )
@@ -62,6 +65,7 @@ export const loginController = new Elysia()
       select: {
         Id: true,
         Name: true,
+        
       },
     });
 
@@ -71,8 +75,9 @@ export const loginController = new Elysia()
     // generate access 
 
     const accessToken = await jwt.sign({
-      userId: '1',
-      sub: '565454'
+      userId: user.Id,
+      name: user.Name,
+      sub: md5hash((new Date()).toISOString())
     });
 
     setCookie("access_token", accessToken, {
@@ -81,11 +86,7 @@ export const loginController = new Elysia()
     });
 
 
-    return {
-      success: true,
-      data: null,
-      message: "Account login successfully",
-    };
+    return new HttpRespose('Account login successfully');
 
   }, {
     body: t.Object({
