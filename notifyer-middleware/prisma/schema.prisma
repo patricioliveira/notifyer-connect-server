@@ -23,10 +23,11 @@ model User {
 }
 
 model Token {
-  Id         String @id @default(uuid())
-  User       User   @relation(fields: [UserId], references: [Id])
-  UserId     String @unique
-  SessionKey String
+  Id          String @id @default(uuid())
+  User        User   @relation(fields: [UserId], references: [Id])
+  UserId      String @unique
+  AccessToken String @unique
+  SessionKey  String @unique
 
   @@map("Tokens")
 }
