@@ -4,7 +4,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts",
-    "migration": "bunx prisma migrate deploy"
+    "migration": "bunx prisma migrate deploy",
+    "build": "bun-vercel ./src/main.ts"
   },
   "dependencies": {
     "@elysiajs/cookie": "^0.8.0",
@@ -16,6 +17,7 @@
     "prisma": "^5.7.1"
   },
   "devDependencies": {
+    "bun-vercel": "^1.0.0-alpha.4",
     "bun-types": "latest"
   },
   "module": "src/index.js"
