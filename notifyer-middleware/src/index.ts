@@ -1,6 +1,7 @@
 import { Elysia, t } from "elysia";
 import { loginController } from "./controllers/loginController";
 import { swagger } from '@elysiajs/swagger';
+import cors from "@elysiajs/cors";
 
 const jwtPayloadSchema = t.Object({
   sub: t.String(),
@@ -28,7 +29,21 @@ const app = new Elysia().use(swagger(
   }
 ))
   .group("/api", (app) =>
-    app.use(loginController)
+    app.use( cors({
+      credentials: true,
+      allowedHeaders: ['content-type'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+      origin: (request): boolean => {
+        const origin = request.headers.get('origin')
+
+        if (!origin) {
+          return false
+        }
+
+        return true
+      },
+    }),)
+    .use(loginController)
   )
   .get("/", () => "Runner Notifyer Server 🚀", {
     detail: {

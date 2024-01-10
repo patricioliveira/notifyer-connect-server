@@ -92,6 +92,15 @@ export const loginController = new Elysia()
           sub: md5hash((new Date()).toISOString())
         });
 
+        //await prisma.token.delete({where:{UserId: user.Id}, re});
+        await prisma.token.create({
+          data:{
+            UserId: user.Id,
+            AccessToken: accessToken,
+            SessionKey: ''
+          }
+        })
+
         setCookie("access_token", accessToken, {
           maxAge: 15 * 60, // 15 minutes
           path: "/",
