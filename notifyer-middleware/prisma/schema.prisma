@@ -14,7 +14,8 @@ model User {
   Id        String   @id @default(uuid())
   Name      String
   Email     String   @unique
-  Password  String   @db.VarChar(255)
+  Password  String   
+  Salt      String
   CreatedAt DateTime @default(now())
   UpdatedAt DateTime @updatedAt
   Token     Token?
